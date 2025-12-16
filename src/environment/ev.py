@@ -1,59 +1,46 @@
-"""
-EV (Electric Vehicle) class module.
+"""Electric Vehicle (EV) module for CAMAC-DRA.
 
-This module contains the EV class which represents an electric vehicle
-with properties like battery capacity, charge level, and charging behavior.
+This module defines the EV class and related functionality for representing
+electric vehicles in the charging and grid simulation environment.
 """
 
 
 class EV:
-    """
-    Represents an Electric Vehicle with battery and charging capabilities.
-    
-    Attributes:
-        ev_id: Unique identifier for the vehicle
-        battery_capacity: Maximum battery capacity in kWh
-        current_charge: Current battery charge level in kWh
-        charging_power: Power rating for charging in kW
-    """
-    
-    def __init__(self, ev_id, battery_capacity, charging_power=11.0):
-        """
-        Initialize an EV instance.
-        
+    """Represents an electric vehicle in the charging network."""
+
+    def __init__(self, ev_id, battery_capacity, initial_soc=0.0):
+        """Initialize an electric vehicle.
+
         Args:
             ev_id: Unique identifier for the vehicle
             battery_capacity: Maximum battery capacity in kWh
-            charging_power: Power rating for charging in kW (default: 11.0)
+            initial_soc: Initial state of charge (0.0 to 1.0)
         """
         self.ev_id = ev_id
         self.battery_capacity = battery_capacity
-        self.current_charge = 0.0
-        self.charging_power = charging_power
-    
-    def get_soc(self):
+        self.soc = initial_soc
+        self.is_charging = False
+        self.current_charging_power = 0.0
+
+    def update_soc(self, power_kw, time_duration_hours):
+        """Update the state of charge based on charging/discharging.
+
+        Args:
+            power_kw: Power in kilowatts (positive for charging, negative for discharging)
+            time_duration_hours: Duration in hours
         """
-        Get the State of Charge (SOC) as a percentage.
-        
+        energy_kwh = power_kw * time_duration_hours
+        energy_change = energy_kwh / self.battery_capacity
+        self.soc = max(0.0, min(1.0, self.soc + energy_change))
+
+    def get_remaining_capacity(self):
+        """Get the remaining energy capacity that can be charged.
+
         Returns:
-            float: SOC percentage (0-100)
+            Remaining capacity in kWh
         """
-        return (self.current_charge / self.battery_capacity) * 100
-    
-    def charge(self, amount):
-        """
-        Charge the vehicle battery.
-        
-        Args:
-            amount: Amount of energy to charge in kWh
-        """
-        self.current_charge = min(self.current_charge + amount, self.battery_capacity)
-    
-    def discharge(self, amount):
-        """
-        Discharge the vehicle battery.
-        
-        Args:
-            amount: Amount of energy to discharge in kWh
-        """
-        self.current_charge = max(self.current_charge - amount, 0.0)
+        return self.battery_capacity * (1.0 - self.soc)
+
+    def __repr__(self):
+        """String representation of the EV."""
+        return f"EV(id={self.ev_id}, capacity={self.battery_capacity}kWh, soc={self.soc:.2%})"
