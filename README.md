@@ -13,10 +13,6 @@ CAMAC-DRA is a sophisticated multi-agent deep reinforcement learning framework d
 - **Realistic Simulation**: Grid simulator with dynamic pricing and constraints
 - **Comprehensive Analysis**: Metrics, visualization, and logging tools
 
-# CAMAC-DRA
-
-A comprehensive framework for Computer-Aided Mesh Analysis and Computational Data-driven Resilience Assessment (CAMAC-DRA).
-
 ## Table of Contents
 
 - [Overview](#overview)
