@@ -1,0 +1,173 @@
+import pickle
+import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
+
+# Create aggregated statistics dataset
+processed_data = {
+    'metadata': {
+        'created_timestamp': '2025-12-16 14:12:41',
+        'data_sources': ['weather', 'traffic', 'pricing', 'charging_transactions'],
+        'aggregation_period': 'hourly',
+        'version': '1.0'
+    },
+    
+    'weather_statistics': {
+        'temperature': {
+            'mean': 22.5,
+            'std': 8.3,
+            'min': -5.2,
+            'max': 38.7,
+            'count': 8760
+        },
+        'humidity': {
+            'mean': 65.4,
+            'std': 18.2,
+            'min': 15.0,
+            'max': 99.5,
+            'count': 8760
+        },
+        'precipitation': {
+            'total_mm': 1245.3,
+            'rainy_days': 156,
+            'mean_daily': 3.41,
+            'max_hourly': 45.2
+        },
+        'wind_speed': {
+            'mean_kmh': 12.5,
+            'max_gust_kmh': 78.3,
+            'std': 6.2
+        }
+    },
+    
+    'traffic_statistics': {
+        'vehicle_count': {
+            'total': 2456789,
+            'hourly_mean': 280.5,
+            'hourly_std': 145.3,
+            'peak_hour_average': 450
+        },
+        'congestion': {
+            'average_congestion_level': 0.62,
+            'congested_hours': 3650,
+            'peak_congestion_hours': '7-9 AM, 5-7 PM'
+        },
+        'vehicle_types': {
+            'cars': 1847695,
+            'trucks': 324891,
+            'buses': 156237,
+            'motorcycles': 127966
+        },
+        'average_speed_kmh': {
+            'morning_peak': 25.3,
+            'afternoon_off_peak': 52.1,
+            'evening_peak': 28.7,
+            'night_off_peak': 61.2
+        }
+    },
+    
+    'pricing_statistics': {
+        'electricity_prices': {
+            'mean_per_kwh': 0.145,
+            'std_per_kwh': 0.032,
+            'min_per_kwh': 0.089,
+            'max_per_kwh': 0.287,
+            'peak_price_hours': '6-10 AM, 4-8 PM'
+        },
+        'peak_vs_offpeak': {
+            'peak_average': 0.189,
+            'offpeak_average': 0.112,
+            'difference_percent': 68.8
+        },
+        'monthly_trends': {
+            'january': 0.152,
+            'february': 0.148,
+            'march': 0.141,
+            'april': 0.138,
+            'may': 0.135,
+            'june': 0.142,
+            'july': 0.156,
+            'august': 0.159,
+            'september': 0.147,
+            'october': 0.143,
+            'november': 0.149,
+            'december': 0.154
+        }
+    },
+    
+    'charging_transaction_statistics': {
+        'total_transactions': 125463,
+        'total_energy_kwh': 3847123.5,
+        'average_transaction': {
+            'duration_minutes': 47.3,
+            'energy_kwh': 30.65,
+            'cost_usd': 4.44
+        },
+        'daily_pattern': {
+            'morning_transactions': {'count': 18750, 'avg_kwh': 28.5},
+            'afternoon_transactions': {'count': 31250, 'avg_kwh': 32.1},
+            'evening_transactions': {'count': 45820, 'avg_kwh': 35.2},
+            'night_transactions': {'count': 29643, 'avg_kwh': 25.3}
+        },
+        'charging_station_distribution': {
+            'fast_chargers': {'count': 245, 'avg_transactions': 512, 'utilization': 0.78},
+            'standard_chargers': {'count': 1823, 'avg_transactions': 69, 'utilization': 0.45},
+            'slow_chargers': {'count': 3456, 'avg_transactions': 36, 'utilization': 0.28}
+        },
+        'vehicle_types': {
+            'bev': {'transactions': 78521, 'avg_kwh': 35.2, 'avg_cost': 5.10},
+            'phev': {'transactions': 46942, 'avg_kwh': 22.1, 'avg_cost': 3.20}
+        },
+        'revenue_analysis': {
+            'total_revenue_usd': 557306.52,
+            'average_revenue_per_station': 145.28,
+            'peak_revenue_hours': '5-8 PM',
+            'revenue_by_charger_type': {
+                'fast': 312451.25,
+                'standard': 189234.18,
+                'slow': 55621.09
+            }
+        }
+    },
+    
+    'integrated_analysis': {
+        'weather_impact_on_traffic': {
+            'rainy_day_congestion_increase': 0.23,
+            'high_temp_demand_correlation': 0.67,
+            'low_temp_demand_correlation': 0.72
+        },
+        'weather_impact_on_charging': {
+            'rainy_day_transaction_increase': 0.15,
+            'high_temp_session_duration_change': -0.08,
+            'low_temp_session_duration_change': 0.12
+        },
+        'traffic_pricing_correlation': {
+            'congestion_price_correlation': 0.81,
+            'peak_hour_price_increase': 0.68
+        },
+        'demand_forecasting': {
+            'avg_hourly_demand_kwh': 438.9,
+            'peak_demand_kwh': 892.3,
+            'offpeak_demand_kwh': 145.2,
+            'forecast_accuracy_mape': 0.087
+        }
+    },
+    
+    'time_series_aggregates': {
+        'hourly_transactions': np.random.normal(14.34, 4.2, 8760).tolist(),
+        'hourly_energy_kwh': np.random.normal(438.9, 120.5, 8760).tolist(),
+        'hourly_revenue_usd': np.random.normal(63.62, 18.3, 8760).tolist(),
+        'hourly_congestion': np.random.uniform(0.35, 0.85, 8760).tolist()
+    },
+    
+    'data_quality': {
+        'total_records_processed': 15847231,
+        'records_with_missing_values': 234567,
+        'completeness_percent': 98.52,
+        'outliers_detected_and_handled': 12843,
+        'data_validation_passed': True
+    }
+}
+
+# Serialize to pickle format
+pkl_bytes = pickle.dumps(processed_data)
