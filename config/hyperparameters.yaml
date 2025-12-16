@@ -1,0 +1,77 @@
+# CAMAC-DRA Hyperparameters Configuration
+
+# Neural Network Architecture
+model:
+  context_encoder:
+    input_dim: 64
+    hidden_dim: 128
+    output_dim: 64
+    num_layers: 3
+    dropout: 0.2
+  
+  gnn:
+    num_layers: 3
+    hidden_dim: 128
+    output_dim: 64
+    activation: "relu"
+    dropout: 0.2
+  
+  attention:
+    num_heads: 8
+    hidden_dim: 128
+    dropout: 0.2
+  
+  q_network:
+    hidden_dims: [256, 256, 128]
+    activation: "relu"
+    dropout: 0.2
+
+# Learning Parameters
+learning:
+  learning_rate: 0.0001
+  learning_rate_decay: 0.9999
+  min_learning_rate: 1e-6
+  weight_decay: 1e-5
+  gradient_clip: 1.0
+
+# Reinforcement Learning
+reinforcement_learning:
+  gamma: 0.99
+  tau: 0.001
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay: 0.995
+  target_update_freq: 1000
+  double_dqn: true
+  dueling_dqn: true
+
+# Replay Buffer
+replay_buffer:
+  capacity: 100000
+  batch_size: 32
+  prioritized: true
+  alpha: 0.6
+  beta: 0.4
+  beta_increment: 0.001
+
+# Coordination
+coordination:
+  pso:
+    num_particles: 30
+    num_iterations: 50
+    inertia: 0.7
+    cognitive: 1.5
+    social: 1.5
+  
+  ga:
+    population_size: 50
+    generations: 100
+    mutation_rate: 0.1
+    crossover_rate: 0.8
+    elite_size: 5
+
+# Regularization
+regularization:
+  l1: 0.0
+  l2: 0.0001
+  entropy_coeff: 0.01

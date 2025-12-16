@@ -1,0 +1,62 @@
+# EV Charging Environment Configuration
+
+environment:
+  # Simulation Parameters
+  num_charging_stations: 10
+  num_evs: 20
+  simulation_hours: 24
+  time_step_minutes: 15
+  
+  # Charging Station Specs
+  charging_station:
+    num_chargers_per_station: 5
+    charger_power_kw: 7.0  # 7 kW AC charging
+    dc_fast_charger_power_kw: 50.0
+    num_dc_fast_chargers: 2
+  
+  # EV Specs
+  ev:
+    battery_capacity_kwh_min: 40
+    battery_capacity_kwh_max: 100
+    charging_efficiency: 0.95
+    max_charge_rate: 0.9  # 90% of charger power
+    min_charge_rate: 0.1  # 10% of charger power
+  
+  # Grid Constraints
+  grid:
+    total_capacity_kw: 500
+    peak_hours: [17, 18, 19, 20]  # Hours 5 PM to 8 PM
+    peak_load_factor: 1.5
+    reserve_margin: 0.2  # 20% reserve margin
+  
+  # Pricing
+  pricing:
+    base_price_per_kwh: 0.15
+    peak_multiplier: 2.0
+    valley_multiplier: 0.5
+    time_of_use: true
+    peak_hours: [17, 18, 19, 20]
+    valley_hours: [0, 1, 2, 3, 4, 5]
+  
+  # Constraints
+  constraints:
+    min_queue_time: 5  # minutes
+    max_queue_time: 240  # minutes
+    priority_boost: 1.2
+    vehicle_to_charger_ratio: 2.0
+  
+  # Observation Space
+  observation:
+    include_price_forecast: true
+    include_demand_forecast: true
+    forecast_horizon: 4  # 1 hour ahead
+    include_soc_history: true
+    soc_history_length: 4
+  
+  # Reward Configuration
+  reward:
+    charging_reward: 1.0
+    wait_time_penalty: -0.1
+    grid_violation_penalty: -10.0
+    efficiency_reward: 0.5
+    fairness_reward: 0.3

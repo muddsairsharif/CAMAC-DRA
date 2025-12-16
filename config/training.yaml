@@ -1,0 +1,90 @@
+# Training Configuration for CAMAC-DRA
+
+training:
+  # Experiment Settings
+  experiment_name: "camac_dra_baseline"
+  seed: 42
+  device: "cuda"  # or "cpu"
+  mixed_precision: true
+  
+  # Training Loop
+  num_epochs: 100
+  num_episodes_per_epoch: 100
+  max_steps_per_episode: 1440  # 24 hours at 1-minute resolution
+  warmup_episodes: 50
+  
+  # Batch and Data
+  batch_size: 32
+  num_workers: 4
+  pin_memory: true
+  prefetch_factor: 2
+  
+  # Validation
+  validation_frequency: 5  # epochs
+  validation_episodes: 20
+  early_stopping_patience: 20
+  early_stopping_metric: "total_reward"
+  
+  # Checkpointing
+  checkpoint_frequency: 5  # epochs
+  save_best_only: true
+  checkpoint_dir: "models/checkpoints"
+  
+  # Logging
+  log_frequency: 10  # steps
+  log_dir: "results/logs"
+  tensorboard_enabled: true
+  wandb_enabled: false
+  wandb_project: "camac-dra"
+  
+  # Optimization
+  optimizer:
+    name: "adam"  # or "adamw", "sgd", "rmsprop"
+    learning_rate: 0.0001
+    betas: [0.9, 0.999]
+    epsilon: 1e-8
+    weight_decay: 1e-5
+  
+  scheduler:
+    name: "exponential"  # or "linear", "cosine", "step", "cyclic"
+    gamma: 0.9999
+    step_size: 1000
+  
+  # Data Augmentation
+  augmentation:
+    enabled: true
+    noise_std: 0.01
+    mixup_alpha: 0.2
+    cutmix_alpha: 1.0
+  
+  # Multi-Agent Settings
+  multi_agent:
+    num_agents: 20
+    communication_enabled: true
+    communication_radius: 5  # stations
+    share_experience: true
+    share_frequency: 100  # steps
+  
+  # Environment
+  environment:
+    num_episodes_train: 100
+    num_episodes_val: 20
+    num_episodes_test: 50
+  
+  # Model Selection
+  model:
+    architecture: "camac"  # or "baseline_dqn", "ppo", "a3c"
+    pretrained: false
+    freeze_encoder: false
+  
+  # Hardware
+  hardware:
+    distributed: false
+    num_gpus: 1
+    num_cpus: 4
+  
+  # Resume Training
+  resume:
+    enabled: false
+    checkpoint_path: null
+    resume_epoch: 0
